@@ -65,6 +65,7 @@ class Rectangle {
 
 }
 
+// Resize
 function resize() {
 
     let w = window.innerWidth / canvas.width;
@@ -93,6 +94,14 @@ function reset() {
     aStart.play();
 }
 
+function addHighScore(score) {
+
+    if (score >= localStorage.highScore) {
+        localStorage.highScore = score;
+    }
+
+}
+
 // Paint
 function paint(ctx) {
     
@@ -101,7 +110,7 @@ function paint(ctx) {
     ctx.fillRect(0, 0, buffer.width, buffer.height);
 
     // Draw player
-    ctx.fillStyle = '#00D700';
+    ctx.fillStyle = '#00ff00';
     for (let i = 0; i < body.length; i++) {
         
         if (i == 0) {
@@ -141,9 +150,11 @@ function paint(ctx) {
     if (pause) {
         ctx.textAlign = 'center';
         if (start) {
-            ctx.fillText('PRESS START', buffer.width / 2, buffer.height / 2);
+            ctx.fillText('PRESS ENTER', buffer.width / 2, buffer.height / 2);
         } else if (gameover) {
             ctx.fillText('GAME OVER', buffer.width / 2, buffer.height / 2);
+            ctx.fillText('BEST SCORE: ' + localStorage.highScore, buffer.width / 2, (buffer.height / 2) + 30);
+        
         } else if (pause && aStart.ended == true){
             ctx.fillText('PAUSE', buffer.width / 2, buffer.height / 2);
         }
@@ -157,6 +168,8 @@ function gameOver_func() {
     pause = true;
     aGameOver.load();
     aGameOver.play();
+    addHighScore(score);
+    console.log(localStorage.highScore);
 }
 
 function act(){
